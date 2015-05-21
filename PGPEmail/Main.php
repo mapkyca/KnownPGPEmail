@@ -12,6 +12,14 @@ namespace IdnoPlugins\PGPEmail {
 	    \Idno\Core\site()->addEventHook('email/send', function(\Idno\Core\Event $event) {
 		$email = $event->data()['email'];
 		$body = $event->response()->getBody();
+		if ($event->response()->getContentType()!='text/plain') {
+		    $children = $event->response()->getChildren();
+		    foreach ($children as $child) {
+			if ($child->getContentType() == 'text/plain') {
+			    $body = $child->getBody();
+			}
+		    }
+		}
 		
 		if ($encrypt = $this->encryptto(strip_tags($body), $email->message->getTo())) {
 		    
