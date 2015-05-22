@@ -23,9 +23,14 @@ namespace IdnoPlugins\PGPEmail {
 		
 		if ($encrypt = $this->encryptto($body, $email->message->getTo())) {
 		    
-		    $email->message->setBody($encrypt, 'text/plain');
+		    //$email->message->setBody($encrypt, 'text/plain');
+		    $message = \Swift_Message::newInstance();
+		    $message->setFrom($email->message->getFrom());
+		    $message->setTo($email->message->getTo());
+		    $message->setSubject($email->message->getSubject());
+		    $message->setBody($encrypt);
 		    
-		    $event->setResponse($email->message);
+		    $event->setResponse($message);
 		} else {
 		    \Idno\Core\site()->logging()->log('Message to ' . $email->message->getTo() . ' not encrypted, probably missing a key.', LOGLEVEL_INFO);
 		}
