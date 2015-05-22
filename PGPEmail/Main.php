@@ -26,6 +26,8 @@ namespace IdnoPlugins\PGPEmail {
 		    $email->message->setBody($encrypt, 'text/plain');
 		    
 		    $event->setResponse($email->message);
+		} else {
+		    \Idno\Core\site()->logging()->log('Message to ' . $email->message->getTo() . ' not encrypted, probably missing a key.', LOGLEVEL_INFO);
 		}
 	    });
 	}
@@ -43,12 +45,16 @@ namespace IdnoPlugins\PGPEmail {
 		    $fingerprint = $this->find_encryption_key($k['subkeys']);
 		}
 	    }
+	    
+	    \Idno\Core\site()->logging()->log("Found fingerprint: $fingerprint", LOGLEVEL_DEBUG);
 
 	    return $fingerprint;
 	}
 
 	protected function encryptto($message, $address) {
 
+	    \Idno\Core\site()->logging()->log("Encrypting to $address", LOGLEVEL_DEBUG);
+	    
 	    $gpg = new \gnupg();
 
 	    if (is_array($address))
@@ -69,6 +75,8 @@ namespace IdnoPlugins\PGPEmail {
 
 		return $gpg->encrypt($message);
 	    }
+	    
+	    \Idno\Core\site()->logging()->log("Problem encrypting message: " . $gpg->geterror(), LOGLEVEL_ERROR);
 
 	    return false;
 	}
