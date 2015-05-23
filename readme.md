@@ -14,7 +14,7 @@ Requirements
 Issues
 ------
 
-* PGP only really works with plain text messages, since most email clients won't render a decrypted email's html as html. So, the code strips tags from the email. This sort of works, but is far from perfect (for example it preserves the CSS), but at least the email is readable.
+* PGP only really works with plain text messages, since most email clients won't render a decrypted email's html as html. Therefore, you'll need to be running the latest version of Known (which supports plain text email), otherwise it'll attempt to strip tags (with intermittent success).
 
 Licence
 -------
