@@ -32,7 +32,7 @@ namespace IdnoPlugins\PGPEmail {
 		    
 		    $event->setResponse($message);
 		} else {
-		    \Idno\Core\site()->logging()->log('Message to ' . implode(', ', $email->message->getTo()) . ' not encrypted, probably missing a key.', LOGLEVEL_INFO);
+		    \Idno\Core\site()->logging()->log('Message to ' . implode(', ', array_keys($email->message->getTo())) . ' not encrypted, probably missing a key.', LOGLEVEL_INFO);
 		}
 	    });
 	}
@@ -58,7 +58,7 @@ namespace IdnoPlugins\PGPEmail {
 
 	protected function encryptto($message, $address) {
 
-	    \Idno\Core\site()->logging()->log("Encrypting to " . implode(', ', $address), LOGLEVEL_DEBUG);
+	    \Idno\Core\site()->logging()->log("Encrypting to " . implode(', ', array_keys($address)), LOGLEVEL_DEBUG);
 	    
 	    $gpg = new \gnupg();
 
